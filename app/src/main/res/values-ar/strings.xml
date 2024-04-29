@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_subtitle">الاصدار %s</string>
+    <string name="panel">الشاشة:</string>
+    <string name="ram">الذاكرة العشوائية:</string>
+    <string name="boot.imgInWindows">يوجد Boot.img في ويندوز: %s</string>
+    <string name="activeSlot">الفتحة الفعالة:</string>
+    <string name="backupBoot_title">"خُذ نسخةً إحتياطيةً من الـ Boot"</string>
+    <string name="backupBoot_subtitle">خُذ نسخةً إحتياطيةً من قسم الـ Boot وأحفظها في Android أو Windows</string>
+    <string name="mount_subtitle">تبديل حالة الـ Mount لِـ Windows حتى تستطيع تعديل محتوياته بكل سهولة</string>
+    <string name="modem_title">إنسخ المودم</string>
+    <string name="modem_subtitle">إنسخ الـ Modemst1 والـ Modemst2 لإصلاح الشبكة الخلوية في Windows على الشريحة 1 في كل مرة تريد فيها الإقلاع إلى Windows</string>
+    <string name="uefi_title">فلّش الـ UEFI</string>
+    <string name="uefi_subtitle">فلّش الـ UEFI لقسم الإقلاع او الـ Boot</string>
+    <string name="quickboot_title">الإقلاع السريع</string>
+    <string name="quickboot_subtitle">إنسخ المودم، فلّش الـ UEFI، وأعد التشغيل بضغطةٍ واحدةٍ</string>
+    <string name="backup_question">أين تريد حفظ النسخة الإحتياطية؟</string>
+    <string name="modem_question">إنسخ المودم؟</string>
+    <string name="uefi_question">فلّش الـ UEFI؟</string>
+    <string name="quickboot_question">أقلِع بسرعةٍ إلى Windows؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="dismiss">تجاهل</string>
+    <string name="please_wait">إنتظر قليلاً …</string>
+    <string name="backup_done">تم حفظ نسخةٍ إحتياطيةٍ بنجاح</string>
+    <string name="mount_done">تم عمل %s لـ Windows بنجاح</string>
+    <string name="modem_done">إستمتع بالشبكة الخلوية في Windows</string>
+    <string name="uefi_done">تم تفليش الـ UEFI بنجاح\n إعادة التشغيل القادمة ستقلع Windows</string>
+    <string name="quickboot_done">حدث خطأٌ ما\n حاول إعادة تشغيل جهازك</string>
+    <string name="force_backup">فرض عملية أخذ نسخة إحتياطية للـ Boot في كل مرة يتم فيها الإقلاع السريع</string>
+    <string name="ifnot_detected_backup">خُذ نسخةً إحتياطيةً للـ Boot إذا لم يتم إكتشاف واحدةٍ في Windows</string>
+    <string name="save_in">إحفظها في …</string>
+    <string name="settings_saved">تم حفظ الإعدادات!</string>
+    <string name="multiple_images_title">تم اكتشاف اكثر من صورة</string>
+    <string name="multiple_images_subtitle">أزل جميع الصور في /sdcard/uefi بإستثناء الصورة الي ستستعملها</string>
+    <string name="uefi_not_found_title">لم يتم العثور على UEFI</string>
+    <string name="uefi_not_found_subtitle">قم بتحميل الـ UEFI الخاصة بـ %s وضعها في /sdcard/UEFI</string>
+    <string name="root_not_detected">لم يتم العثور على الروت\\n هذا التطبيق يحتاج للروت للعمل بشكلٍ صحيح!</string>
+    <string name="language">إختر اللغة</string>
+    <string name="default_lang">(الإفتراضي)</string>
+</resources>

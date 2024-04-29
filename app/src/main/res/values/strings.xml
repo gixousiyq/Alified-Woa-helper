@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name" translatable="false">best helper</string>
+    <string name="app_subtitle">Version %s</string>
+    <string name="default_lang">(Default)</string>
+    <string name="panel">Panel: </string>
+    <string name="ram">Ram: </string>
+    <string name="boot.imgInWindows">boot.img In Windows: %s</string>
+    <string name="activeSlot">Active Slot: </string>
+    <string name="backupBoot_title">Backup Boot</string>
+    <string name="backupBoot_subtitle">Take a backup of the Boot partition to Android or Windows</string>
+    <string name="mount_subtitle">Toggle Windows mount state to Internal Storage so that you can edit its content easily</string>
+    <string name="modem_title">Dump Modem</string>
+    <string name="modem_subtitle">Dump Modemst1 and Modemst2 to Windows to fix LTE on SIM 1 everytime you want to boot Windows</string>
+    <string name="uefi_title">Flash UEFI</string>
+    <string name="uefi_subtitle">Flash the UEFI to the Boot partiton</string>
+    <string name="quickboot_title">QuickBoot</string>
+    <string name="quickboot_subtitle">Dump modem, Flash UEFI, And reboot to windows in one click</string>
+    <string name="backup_question">Where to backup?</string>
+    <string name="mount_question" translatable="false">%s Windows?</string>
+    <string name="modem_question">Dump modem?</string>
+    <string name="uefi_question">Flash UEFI?</string>
+    <string name="quickboot_question">Quickboot to Windows?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="backup_done">A Backup has been made successfully</string>
+    <string name="mount_done">Windows has been %sed successfully</string>
+    <string name="modem_done">Enjoy LTE in Windows</string>
+    <string name="uefi_done">UEFI has been flashed successfully\nNext boot will boot into Windows</string>
+    <string name="quickboot_done">Something had gone wrong\nTry rebooting manualy</string>
+    <string name="title_activity_settings" translatable="false">SettingsActivity</string>
+    <string name="force_backup">Force backup the boot.img whenever you quickboot</string>
+    <string name="ifnot_detected_backup">Backup the boot.img whenever none is detected in Windows</string>
+    <string name="save_in">Save it in ...</string>
+    <string name="title_activity_info" translatable="false">InfoActivity</string>
+    <string name="settings_saved">Settings saved!</string>
+    <string name="multiple_images_title">Multiple images has been detected</string>
+    <string name="multiple_images_subtitle">Remove all of the images in /sdcard/UEFI except the one you want to use</string>
+    <string name="uefi_not_found_title">UEFI not found</string>
+    <string name="uefi_not_found_subtitle">Download UEFI for %s and place it in /sdcard/UEFI</string>
+    <string name="root_not_detected">\nRoot not detected,\n\nThis app needs Root permissions to function properly!\n</string>
+    <string name="language">Select language</string>
+</resources>
