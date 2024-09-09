@@ -36,8 +36,8 @@ object functions {
     val busybox = checkBusybox()
 
     fun checkBusybox(): String {
-        val magiskBusyBox = ShellUtils.fastCmd("su -c find /data/adb/busybox | grep busybox | grep magisk")
-        val ksuBusyBox = ShellUtils.fastCmd("su -c find /data/adb/busybox | grep busybox | grep ksu")
+        val magiskBusyBox = ShellUtils.fastCmd("su -c find /data/adb | grep busybox | grep magisk")
+        val ksuBusyBox = ShellUtils.fastCmd("su -c find /data/adb | grep busybox | grep ksu")
         if (magiskBusyBox.isNotEmpty()) {
             return magiskBusyBox
         }
