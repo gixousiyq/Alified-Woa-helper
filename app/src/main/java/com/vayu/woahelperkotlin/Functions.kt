@@ -1,29 +1,15 @@
 package com.vayu.woahelperkotlin
 
 import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.content.Context
-import android.content.res.Resources
 import android.os.Environment
-import android.provider.Settings.Global.getString
-import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.core.content.ContextCompat
-import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.ShellUtils
 import com.vayu.woahelperkotlin.elements.dialog
-import com.vayu.woahelperkotlin.screens.MainScreen
 import com.vayu.woahelperkotlin.utils.MemoryUtils
 import com.vayu.woahelperkotlin.utils.RAM
-import com.vayu.woahelperkotlin.R
-import java.util.logging.Logger
-import kotlin.coroutines.coroutineContext
 
 
-@SuppressLint("StaticFieldLeak")
+
 object functions {
     var ramvalue: Int = 0;
     val isAB = ShellUtils.fastCmd("getprop ro.boot.slot_suffix") != ""
@@ -175,10 +161,7 @@ object functions {
 
     fun mount(updateDialogAfterFinish: Boolean) {
         ShellUtils.fastCmd("su -c mkdir $storagePath/Windows")
-        // The -o thing is to fix windows mount needing root permissions
-        // to browse, Thats caused of windows format done in android via
-        // su -c mkfs.ntfs or sudo mkfs -t ntfs etc
-        ShellUtils.fastCmd("su -mm -c busybox mount -t ntfs -o uid=10181,gid=10181,default_permissions,allow_other" +
+        ShellUtils.fastCmd("su -mm -c busybox mount -t ntfs -o allow_other" +
                 " /dev/block/by-name/win $storagePath/Windows")
         mounted = "Unmount"
         if (updateDialogAfterFinish) {
