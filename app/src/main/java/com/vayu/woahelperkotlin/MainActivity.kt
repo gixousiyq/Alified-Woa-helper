@@ -14,7 +14,7 @@ import com.vayu.woahelperkotlin.ui.theme.WoaHelperKotlinTheme
 import java.util.Locale
 
 object app {
-    val version = "1.0"
+    val version = "1.1"
 }
 
 class MainActivity : ComponentActivity() {

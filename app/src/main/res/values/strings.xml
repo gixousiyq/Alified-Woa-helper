@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">best helper</string>
+    <string name="app_name" translatable="false">Alified helper</string>
     <string name="app_subtitle">Version %s</string>
     <string name="default_lang">(Default)</string>
     <string name="panel">Panel: </string>
@@ -41,4 +41,5 @@
     <string name="uefi_not_found_subtitle">Download UEFI for %s and place it in /sdcard/UEFI</string>
     <string name="root_not_detected">\nRoot not detected,\n\nThis app needs Root permissions to function properly!\n</string>
     <string name="language">Select language</string>
+    <string name="mount_to_mnt">Mount windows to the path /mnt/Windows</string>
 </resources>

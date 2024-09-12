@@ -38,4 +38,5 @@
     <string name="root_not_detected">لم يتم العثور على الروت\\n هذا التطبيق يحتاج للروت للعمل بشكلٍ صحيح!</string>
     <string name="language">إختر اللغة</string>
     <string name="default_lang">(الإفتراضي)</string>
+    <string name="mount_to_mnt">عمل Mount لـ Windows إلى المسار mnt/Windows/</string>
 </resources>

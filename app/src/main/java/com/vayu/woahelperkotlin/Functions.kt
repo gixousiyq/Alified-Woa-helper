@@ -7,7 +7,7 @@ import com.topjohnwu.superuser.ShellUtils
 import com.vayu.woahelperkotlin.elements.dialog
 import com.vayu.woahelperkotlin.utils.MemoryUtils
 import com.vayu.woahelperkotlin.utils.RAM
-
+import java.security.PrivateKey
 
 
 object functions {
@@ -20,6 +20,7 @@ object functions {
     // false if it doesnt detect and true if it did detect
     var bootImgCheck: Boolean = false
     val busybox = checkBusybox()
+    var windowsMountPath = "$storagePath/Windows"
 
     fun checkBusybox(): String {
         val magiskBusyBox = ShellUtils.fastCmd("su -c find /data/adb | grep busybox | grep magisk")
@@ -33,10 +34,10 @@ object functions {
         else return ""
     }
 
-    fun checkDevice(): String {
-        checkBootImg()
+    fun checkDevice(context: Context): String {
+        checkBootImg(context)
         val readlink = ShellUtils.fastCmd("su -c readlink -f /dev/block/bootdevice/by-name/win")
-        val mount = ShellUtils.fastCmd("su -c mount | grep $readlink")
+        val mount = ShellUtils.fastCmd("su -mm -c mount | grep $readlink")
         if (mount == "") {
             mounted = "Mount"
         } else {
@@ -46,8 +47,8 @@ object functions {
         return ShellUtils.fastCmd("getprop ro.build.product")
     }
 
-    fun DeterminePicture(): String {
-        val device = checkDevice()
+    fun DeterminePicture(context: Context): String {
+        val device = checkDevice(context)
         val vayu = listOf<String>("vayu", "bhima")
         val raphael = listOf<String>("raphael", "raphaelin")
 
@@ -103,7 +104,7 @@ object functions {
         return list[list.size - 1]
     }
 
-    fun getLink(guideOrgroup: String): String {
+    fun getLink(guideOrgroup: String, context: Context): String {
         var vayu = listOf<String>(
             "https://github.com/woa-vayu/Port-Windows-11-POCO-X3-Pro", // guide
             "https://www.t.me/winonvayualt"
@@ -118,22 +119,22 @@ object functions {
         )
         when {
             guideOrgroup == "guide" -> {
-                if (DeterminePicture() == "vayu") return vayu[0]
-                if (DeterminePicture() == "nabu") return nabu[0]
-                if (DeterminePicture() == "raphael") return raphael[0]
+                if (DeterminePicture(context) == "vayu") return vayu[0]
+                if (DeterminePicture(context) == "nabu") return nabu[0]
+                if (DeterminePicture(context) == "raphael") return raphael[0]
             }
 
             guideOrgroup == "group" -> {
-                if (DeterminePicture() == "vayu") return vayu[1]
-                if (DeterminePicture() == "nabu") return nabu[1]
-                if (DeterminePicture() == "raphael") return raphael[1]
+                if (DeterminePicture(context) == "vayu") return vayu[1]
+                if (DeterminePicture(context) == "nabu") return nabu[1]
+                if (DeterminePicture(context) == "raphael") return raphael[1]
             }
         }
         return ""
     }
 
 
-    fun backupBoot(destination: String, updateDialogAfterFinish: Boolean, checkBootImg: Boolean = true) {
+    fun backupBoot(destination: String, updateDialogAfterFinish: Boolean, checkBootImg: Boolean = true, context: Context) {
         if (destination == "android") {
             ShellUtils.fastCmd("su -c dd " +
                 "if=/dev/block/bootdevice/by-name/boot\$(getprop ro.boot.slot_suffix) " +
@@ -142,27 +143,33 @@ object functions {
         }
         if (destination == "windows") {
             if (mounted == "Mount") {
-                mount(false)
+                mount(false, context)
                 ShellUtils.fastCmd("su -c dd " +
                         "if=/dev/block/bootdevice/by-name/boot\$(getprop ro.boot.slot_suffix) " +
-                        "of=$storagePath/Windows/boot.img bs=16M")
+                        "of=$windowsMountPath/boot.img bs=16M")
                 unmount(false)
-                if (checkBootImg) checkBootImg()
+                if (checkBootImg) checkBootImg(context)
             }
             if (mounted == "Unmount") {
                 ShellUtils.fastCmd("su -c dd " +
                         "if=/dev/block/bootdevice/by-name/boot\$(getprop ro.boot.slot_suffix) " +
-                        "of=$storagePath/Windows/boot.img bs=16M")
-                if (checkBootImg) checkBootImg()
+                        "of=$windowsMountPath/boot.img bs=16M")
+                if (checkBootImg) checkBootImg(context)
             }
             if (updateDialogAfterFinish) updateDialogAfterFinishingTheTask()
         }
     }
 
-    fun mount(updateDialogAfterFinish: Boolean) {
-        ShellUtils.fastCmd("su -c mkdir $storagePath/Windows")
-        ShellUtils.fastCmd("su -mm -c busybox mount -t ntfs -o allow_other" +
-                " /dev/block/by-name/win $storagePath/Windows")
+    fun mount(updateDialogAfterFinish: Boolean, context: Context) {
+        val mount_to_mnt = context.getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("mount_to_mnt", false)
+        if (mount_to_mnt) {
+            windowsMountPath = "/mnt/Windows"
+        } else {
+            windowsMountPath = "$storagePath/Windows"
+        }
+        ShellUtils.fastCmd("su -c mkdir $windowsMountPath")
+        ShellUtils.fastCmd("su -mm -c $busybox mount -t ntfs -o allow_other" +
+                " /dev/block/by-name/win $windowsMountPath")
         mounted = "Unmount"
         if (updateDialogAfterFinish) {
             updateDialogAfterFinishingTheTask()
@@ -170,26 +177,26 @@ object functions {
     }
 
     fun unmount(updateDialogAfterFinish: Boolean) {
-        ShellUtils.fastCmd("su -mm -c umount $storagePath/Windows")
-        ShellUtils.fastCmd("su -c rmdir $storagePath/Windows")
+        ShellUtils.fastCmd("su -mm -c umount $windowsMountPath")
+        ShellUtils.fastCmd("su -c rmdir $windowsMountPath")
         mounted = "Mount"
         if (updateDialogAfterFinish) {
             updateDialogAfterFinishingTheTask()
         }
     }
 
-    fun dump_modem(updateDialogAfterFinish: Boolean) {
+    fun dump_modem(updateDialogAfterFinish: Boolean, context: Context) {
         when {
             mounted == "Mount" -> {
-                mount(false)
+                mount(false, context)
                 // code kanged from autoprivosin zip made by birabub or idk who actualy made it
-                val path = ShellUtils.fastCmd("find $storagePath/Windows/Windows/System32/DriverStore/FileRepository -name \"qcremotefs8150.inf_arm64_*\"")
+                val path = ShellUtils.fastCmd("find $windowsMountPath/Windows/System32/DriverStore/FileRepository -name \"qcremotefs8150.inf_arm64_*\"")
                 ShellUtils.fastCmd("dd if=/dev/block/by-name/modemst1 of=$path/bootmodem_fs1 bs=8388608")
                 ShellUtils.fastCmd("dd if=/dev/block/by-name/modemst2 of=$path/bootmodem_fs2 bs=8388608")
                 unmount(false)
             }
             mounted == "Unmount" -> {
-                val path = ShellUtils.fastCmd("find $storagePath/Windows/Windows/System32/DriverStore/FileRepository -name \"qcremotefs8150.inf_arm64_*\"")
+                val path = ShellUtils.fastCmd("find $windowsMountPath/Windows/System32/DriverStore/FileRepository -name \"qcremotefs8150.inf_arm64_*\"")
                 ShellUtils.fastCmd("dd if=/dev/block/by-name/modemst1 of=$path/bootmodem_fs1 bs=8388608")
                 ShellUtils.fastCmd("dd if=/dev/block/by-name/modemst2 of=$path/bootmodem_fs2 bs=8388608")
             }
@@ -214,31 +221,31 @@ object functions {
     }
 
     fun quickboot(context: Context) {
-        mount(false)
+        mount(false, context)
         flash(false)
         // prefrence stuff
         val sharedPrefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         if (sharedPrefs.getBoolean("force_backup_check", false)) {
             if (sharedPrefs.getBoolean("force_backup_android", false)) {
-                backupBoot("android", false, false)
+                backupBoot("android", false, false, context)
             }
             if (sharedPrefs.getBoolean("force_backup_windows", false)) {
-                backupBoot("windows", false, false)
+                backupBoot("windows", false, false, context)
             }
         }
         if (sharedPrefs.getBoolean("detected_backup_check", false)) {
             var ThereIsABootImgInWindows = bootImgCheck
             if (!ThereIsABootImgInWindows) {
                 if (sharedPrefs.getBoolean("detected_backup_android", false)) {
-                    backupBoot("android", false, false)
+                    backupBoot("android", false, false, context)
                 }
                 if (sharedPrefs.getBoolean("detected_backup_windows", false)) {
-                    backupBoot("windows", false, false)
+                    backupBoot("windows", false, false, context)
                 }
             }
         }
         if (supportsModem) {
-            dump_modem(false)
+            dump_modem(false, context)
         }
         // command from m3k app
         ShellUtils.fastCmd("su -c svc power reboot")
@@ -259,10 +266,10 @@ object functions {
 
 
     // Will return false if it doesnt detect and true if it did detect
-    fun checkBootImg() {
+    fun checkBootImg(context: Context) {
         var aRandomCheck = false
         if (mounted == "Mount") {
-            mount(false)
+            mount(false, context)
             aRandomCheck = true
         }
         var check = ShellUtils.fastCmd("su -c ls ${functions.storagePath}/Windows/boot.img")

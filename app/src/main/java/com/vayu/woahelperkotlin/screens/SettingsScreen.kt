@@ -105,22 +105,33 @@ fun SettingsScreen() {
             )
         )
     }
+    var mount_to_mnt by remember {
+        mutableStateOf(
+            sharedPrefs.getBoolean(
+                "mount_to_mnt",
+                false
+            )
+        )
+    }
 
     var force_android_btn_color by remember { mutableStateOf(red) }
     var force_windows_btn_color by remember { mutableStateOf(red) }
     var detected_android_btn_color by remember { mutableStateOf(red) }
     var detected_windows_btn_color by remember { mutableStateOf(red) }
+    var mount_to_mnt_btn_color by remember { mutableStateOf(red) }
 
     force_android_btn_color = if (force_backup_android) green else red
     force_windows_btn_color = if (force_backup_windows) green else red
     detected_android_btn_color = if (detected_backup_android) green else red
     detected_windows_btn_color = if (detected_backup_windows) green else red
+    mount_to_mnt_btn_color = if (mount_to_mnt) green else red
 
     fun updateButtons() {
         force_android_btn_color = if (force_backup_android) green else red
         force_windows_btn_color = if (force_backup_windows) green else red
         detected_android_btn_color = if (detected_backup_android) green else red
         detected_windows_btn_color = if (detected_backup_windows) green else red
+        mount_to_mnt_btn_color = if (mount_to_mnt) green else red
     }
 
     WoaHelperKotlinTheme {
@@ -172,7 +183,7 @@ fun SettingsScreen() {
                                                 with(localDensity) { coordinates.size.height.toDp() }
                                         }
                                 )
-                                Column (
+                                Column(
                                     verticalArrangement = Arrangement.Center,
                                     modifier = Modifier
                                         .height(textHeight)
@@ -298,7 +309,7 @@ fun SettingsScreen() {
                                                     with(localDensity) { coordinates.size.height.toDp() }
                                             }
                                     )
-                                    Column (
+                                    Column(
                                         verticalArrangement = Arrangement.Center,
                                         modifier = Modifier.height(textHeight)
                                     ) {
@@ -395,17 +406,17 @@ fun SettingsScreen() {
                         }
                     }
                     // Select language button
-                    Surface (
+                    Surface(
                         shape = MaterialTheme.shapes.large,
                         onClick = {
                             dialog.show_language_dialog.value = true
-                                  },
+                        },
                         color = colorResource(R.color.settings_cards),
                         modifier = Modifier
                             .padding(top = 10.dp, start = 10.dp, end = 10.dp)
                             .width(400.dp)
                     ) {
-                        Column (
+                        Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -419,6 +430,58 @@ fun SettingsScreen() {
                                     .scale(0.90f)
                                     .width(350.dp)
                             )
+                        }
+                    }
+
+                    Surface(
+                        shape = MaterialTheme.shapes.large,
+                        color = colorResource(R.color.settings_cards),
+                        modifier = Modifier
+                            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
+                            .width(400.dp)
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                val localDensity = LocalDensity.current
+                                var textHeight by remember {
+                                    mutableStateOf(0.dp)
+                                }
+                                Text(
+                                    text = c.getString(R.string.mount_to_mnt),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.SemiBold,
+                                    textAlign = TextAlign.Center,
+                                    color = colorResource(R.color.white),
+                                    modifier = Modifier
+                                        .padding(vertical = 10.dp)
+                                        .scale(0.90f)
+                                        .width(300.dp)
+                                        .onGloballyPositioned { coordinates ->
+                                            // Set column height using the LayoutCoordinates
+                                            textHeight =
+                                                with(localDensity) { coordinates.size.height.toDp() }
+                                        }
+                                )
+                                Column(
+                                    verticalArrangement = Arrangement.Center,
+                                    modifier = Modifier
+                                        .height(textHeight)
+                                        .padding(top = 10.dp)
+                                ) {
+                                    Switch(
+                                        checked = mount_to_mnt, onCheckedChange = {
+                                            mount_to_mnt = it
+                                            editor.putBoolean("mount_to_mnt", it)
+                                            editor.commit()
+                                        }, modifier = Modifier
+                                            .padding(top = 15.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }

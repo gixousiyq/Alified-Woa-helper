@@ -58,7 +58,7 @@ fun InfoCard() {
                 var width = 165.dp
                 var height = 200.dp
                 var padding = 5.dp
-                var picture = functions.DeterminePicture()
+                var picture = functions.DeterminePicture(LocalContext.current)
                 if (picture == "vayu") Image(painter = painterResource(R.drawable.vayu), contentDescription = "Device Picture",
                     modifier = Modifier
                         .padding(start = padding)
@@ -170,9 +170,10 @@ fun InfoCard() {
                             verticalAlignment = Alignment.Bottom,
                             horizontalArrangement = Arrangement.Center
                         ) {
+                            val context = LocalContext.current
                             Button(
                                 onClick = {
-                                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(functions.getLink("guide")))
+                                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(functions.getLink("guide", context)))
                                     context.startActivity(i)
                                           },
                                 modifier = Modifier
@@ -183,7 +184,7 @@ fun InfoCard() {
                             }
                             Button(
                                 onClick = {
-                                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(functions.getLink("group")))
+                                    val i = Intent(Intent.ACTION_VIEW, Uri.parse(functions.getLink("group", context)))
                                     context.startActivity(i)
                                           },
                                 modifier = Modifier

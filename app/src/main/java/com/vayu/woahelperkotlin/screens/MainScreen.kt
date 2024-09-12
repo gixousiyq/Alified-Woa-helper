@@ -89,7 +89,7 @@ fun MainScreen() {
                                 uefi_check == "Multiple Images Detected Error" -> stringResource(R.string.multiple_images_subtitle)
                                 uefi_check == "" -> stringResource(
                                     R.string.uefi_not_found_subtitle,
-                                    when (functions.DeterminePicture()) {
+                                    when (functions.DeterminePicture(LocalContext.current)) {
                                         "vayu" -> "POCO X3 PRO (VAYU)"
                                         "nabu" -> "XIAOMI PAD 5 (NABU)"
                                         "raphael" -> "XIAOMI 9T PRO (RAPHAEL)"
@@ -117,7 +117,7 @@ fun MainScreen() {
                             )
                         }
                     }
-
+                    val context = LocalContext.current
                     // Dialogs
                     when {
                         dialog.show_backup_dialog.value -> {
@@ -133,10 +133,10 @@ fun MainScreen() {
                                 ),
                                 onClicks = listOf({
                                     dialog.proceed_to_loading.value = true
-                                    functions.backupBoot(destination = "windows", true)
+                                    functions.backupBoot(destination = "windows", true, true, context)
                                 }, {
                                     dialog.proceed_to_loading.value = true
-                                    functions.backupBoot(destination = "android", true)
+                                    functions.backupBoot(destination = "android", true, true, context)
                                 }, {
                                     dialog.is_finished = false
                                     dialog.show_backup_dialog.value = false
@@ -150,7 +150,6 @@ fun MainScreen() {
                                 paddingInButtons = 0
                             )
                         }
-
                         dialog.show_mount_dialog.value -> {
                             dialog(
                                 iconless = false,
@@ -163,7 +162,7 @@ fun MainScreen() {
                                 ),
                                 onClicks = listOf({
                                     dialog.proceed_to_loading.value = true
-                                    if (functions.mounted == "Mount") functions.mount(true)
+                                    if (functions.mounted == "Mount") functions.mount(true, context)
                                     else functions.unmount(true)
                                 }, {
                                     dialog.is_finished = false
@@ -191,7 +190,7 @@ fun MainScreen() {
                                 ),
                                 onClicks = listOf({
                                     dialog.proceed_to_loading.value = true
-                                    functions.dump_modem(true)
+                                    functions.dump_modem(true, context)
                                 }, {
                                     dialog.is_finished = false
                                     dialog.show_modem_dialog.value = false
